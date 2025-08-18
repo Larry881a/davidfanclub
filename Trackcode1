@@ -1,0 +1,141 @@
+import cv2
+import numpy as np
+import time
+from adafruit_pca9685 import PCA9685
+from board import SCL, SDA
+import busio
+
+# ====== Servo helpers ======
+# Convert angle (in degrees) to PCA9685 duty for typical 50 Hz servos
+def angle_to_duty(angle, min_us=500, max_us=2500, freq=50):
+    # clamp
+    angle = max(0, min(180, angle))
+    us = min_us + (max_us - min_us) * (angle / 180.0)
+    period_us = 1_000_000 / freq
+    duty = int(65535 * (us / period_us))
+    return duty
+
+# ====== Init PCA9685 ======
+i2c = busio.I2C(SCL, SDA)
+pca = PCA9685(i2c)
+pca.frequency = 50
+
+PAN_CH   = 0
+TILT_CH  = 1
+TRIG_CH  = 2
+
+# Calibrate your neutral/limits (these vary per mount/geometry)
+pan_angle  = 90
+tilt_angle = 90
+
+def set_pan_tilt(pan, tilt):
+    global pan_angle, tilt_angle
+    pan_angle  = max(0, min(180, pan))
+    tilt_angle = max(0, min(180, tilt))
+    pca.channels[PAN_CH].duty_cycle = angle_to_duty(pan_angle)
+    pca.channels[TILT_CH].duty_cycle = angle_to_duty(tilt_angle)
+
+def trigger_pull(pull_ms=200):
+    # Adjust angles to pull/release trigger. Start by finding your two positions.
+    TRIG_REST = 40   # trigger released angle
+    TRIG_PULL = 90   # trigger pulled angle (tune this)
+    pca.channels[TRIG_CH].duty_cycle = angle_to_duty(TRIG_PULL)
+    time.sleep(pull_ms/1000.0)
+    pca.channels[TRIG_CH].duty_cycle = angle_to_duty(TRIG_REST)
+
+# Initialize neutral positions
+set_pan_tilt(90, 90)
+pca.channels[TRIG_CH].duty_cycle = angle_to_duty(40)
+
+# ====== Camera ======
+cap = cv2.VideoCapture(0)  # adjust index or use PiCamera with cv2.VideoCapture pipeline
+cap.set(cv2.CAP_PROP_FRAME_WIDTH,  640)
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+
+# ====== Tracking params ======
+dead_zone_px = 15
+min_area = 1500
+kp_pan  = 0.08   # proportional gains; tune to your rig
+kp_tilt = 0.10
+max_step = 3.0   # deg/frame to limit speed
+stable_needed = 8
+stable_count = 0
+fired_recently = False
+refire_delay_s = 2.5
+last_fire_t = 0
+
+# Red thresholds in HSV (tune for your lighting!)
+# OpenCV Hue: 0–179
+low_red1  = np.array([0,   120, 70])
+high_red1 = np.array([10,  255, 255])
+low_red2  = np.array([170, 120, 70])
+high_red2 = np.array([180, 255, 255])
+
+def clamp(v, lo, hi):
+    return lo if v < lo else hi if v > hi else v
+
+while True:
+    ok, frame = cap.read()
+    if not ok:
+        break
+
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+
+    mask1 = cv2.inRange(hsv, low_red1, high_red1)
+    mask2 = cv2.inRange(hsv, low_red2, high_red2)
+    mask = cv2.bitwise_or(mask1, mask2)
+
+    # Morphological cleanup
+    kernel = np.ones((5,5), np.uint8)
+    mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel, iterations=1)
+    mask = cv2.morphologyEx(mask, cv2.MORPH_DILATE, kernel, iterations=1)
+
+    contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    h, w = frame.shape[:2]
+    cx_target, cy_target, area = None, None, 0
+
+    if contours:
+        c = max(contours, key=cv2.contourArea)
+        area = cv2.contourArea(c)
+        if area > min_area:
+            M = cv2.moments(c)
+            if M["m00"] != 0:
+                cx_target = int(M["m10"]/M["m00"])
+                cy_target = int(M["m01"]/M["m00"])
+
+    if cx_target is not None:
+        # Compute pixel error
+        ex = (w//2) - cx_target   # +ex -> target right, so pan increases?
+        ey = (h//2) - cy_target   # +ey -> target below, so tilt increases?
+
+        # Proportional control with rate limiting
+        pan_delta  = clamp(kp_pan  * ex, -max_step, max_step)
+        tilt_delta = clamp(kp_tilt * ey, -max_step, max_step)
+        set_pan_tilt(pan_angle + pan_delta, tilt_angle + tilt_delta)
+
+        # Check “on target”
+        on_target = abs(ex) < dead_zone_px and abs(ey) < dead_zone_px
+        if on_target:
+            stable_count += 1
+        else:
+            stable_count = 0
+
+        # Fire logic
+        now = time.time()
+        if stable_count >= stable_needed and (now - last_fire_t) > refire_delay_s:
+            trigger_pull()
+            last_fire_t = now
+            stable_count = 0
+    else:
+        stable_count = 0  # lost target
+
+    # (Optional) diagnostics preview
+    # cv2.circle(frame, (w//2, h//2), dead_zone_px, (255,255,255), 1)
+    # if cx_target is not None:
+    #     cv2.circle(frame, (cx_target, cy_target), 6, (0,255,0), -1)
+    # cv2.imshow("frame", frame); cv2.imshow("mask", mask)
+    # if cv2.waitKey(1) & 0xFF == 27: break
+
+cap.release()
+cv2.destroyAllWindows()
