@@ -3,31 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>DavidStudios Fan Club</title>
     <style>
         body {
             background-color: rgb(200, 255, 0);
+            background-image: url('downlad.png');
         }
         #beserker {
             border: 6px solid rgb(204, 17, 211);
             border-radius: 8px; /* optional: rounded corners */
             box-shadow: 0 4px 8px rgb(0, 0, 0);
-        }
+            position: absolute;
+            right:30px;
 
+        }
+        button {
+            background-image: url("downlad.png");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: rgb(204, 17, 211);
+            color: rgb(0, 0, 0);
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background 1s;
+            font: 32px Lobster;
+            
+        }
+        button:hover {
+            background-color: rgb(35, 12, 245);
+        }
+        #HogRider360 {
+            position: relative;
+            left: 350px;
+        }
+        #DavidStudiosLink {
+            position: relative;
+            bottom: 50px;
+            left: 550px;
+        }
+       
     </style>
 </head>
 <body>
     <h1> This is my first web page </h1>
     <b> Mitchell Chan Reynolds </b>
     <br>
-    <img src="c:\Users\vanbcohe15\Downloads\yeahimman.png" alt="My Image">
-    <img id="beserker" src="c:\Users\vanbcohe15\Downloads\beserker.png" alt="My Image">
+    <img src="c:\Users\vanbcohe15\Downloads\yeahimman.png" alt="Batman without the bat ears">
+    <img id="beserker" src="beserker.png" alt="Clash Royale Berserker">
     <br>
     <b> this is Man </b>
     <br>
+    <a id="DavidStudiosLink" href="https://itzdavidstudios.github.io/about.html">
+        <button id="DavidButton" type="button">DavidStudios</button>
+
+    </a>
     <br>
     <br>
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/yVLfEHXQk08" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <iframe id="HogRider360" width="560" height="315" src="https://www.youtube.com/embed/yVLfEHXQk08" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+
+
+
 </body>
 </html>
 
