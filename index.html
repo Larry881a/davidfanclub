@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DavidStudios Fan Club</title>
+    <link rel="icon" type="image/x-icon" href="avery.png">
     <style>
         body {
-            background-color: rgb(200, 255, 0);
             background-image: url('downlad.png');
+            background-repeat: no-repeat;
+            background-size: cover;
         }
         #beserker {
             border: 6px solid rgb(204, 17, 211);
@@ -18,18 +20,18 @@
 
         }
         button {
-            background-image: url("downlad.png");
+            background-image: url("img/avery.png");
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
             background-color: rgb(204, 17, 211);
-            color: rgb(0, 0, 0);
-            border: none;
+            color: rgb(204, 6, 6);
+            border: 5px solid rgb(200, 255, 0);
             border-radius: 4px;
             padding: 10px 20px;
             cursor: pointer;
             transition: background 1s;
-            font: 32px Lobster;
+            font: 32px comic sans ms;
             
         }
         button:hover {
@@ -38,21 +40,34 @@
         #HogRider360 {
             position: relative;
             left: 350px;
+            bottom:400px;
         }
         #DavidStudiosLink {
             position: relative;
             bottom: 50px;
             left: 550px;
         }
-       
+       #DavidTable {
+            padding: 60px;
+            position: relative;
+            right: 50px;
+            top:300px;
+       }
+         #horse {
+                position: relative;
+                left: 900px;
+                bottom: 500px;
+         }
+
+
     </style>
 </head>
 <body>
     <h1> This is my first web page </h1>
-    <b> Mitchell Chan Reynolds </b>
+    <b> Mitchell Chan Reynolds &#128049 </b>
     <br>
     <img src="c:\Users\vanbcohe15\Downloads\yeahimman.png" alt="Batman without the bat ears">
-    <img id="beserker" src="beserker.png" alt="Clash Royale Berserker">
+    <img id="beserker" src="img/beserker.png" alt="Clash Royale Berserker">
     <br>
     <b> this is Man </b>
     <br>
@@ -60,13 +75,27 @@
         <button id="DavidButton" type="button">DavidStudios</button>
 
     </a>
+    <table id="DavidTable">
+        <tr>
+            <td><img src="img/mikumikubeam.png" alt="Miku"></td>
+            <td><img src="img/klent.png" alt=""></td>
+        </tr>
+        <tr>
+            <td>testtesttest</td>
+            <td>testtesttesttest</td>
+    </table>
+
+  
+
+
+
     <br>
     <br>
     <iframe id="HogRider360" width="560" height="315" src="https://www.youtube.com/embed/yVLfEHXQk08" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 
 
-
+    <p id="horse" style="font-size:100px">&#128052;</p>
 
 </body>
 </html>
