@@ -37,10 +37,16 @@
         button:hover {
             background-color: rgb(35, 12, 245);
         }
+        .video-center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width:100%;
+        }
+
+
         #HogRider360 {
-            position: relative;
-            left: 350px;
-            bottom:400px;
+            position: static;
         }
         #DavidStudiosLink {
             position: relative;
@@ -112,7 +118,11 @@
 
     <br>
     <br>
-    <iframe id="HogRider360" width="560" height="315" src="https://www.youtube.com/embed/yVLfEHXQk08" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    
+    <div class="video-container">
+        <iframe id="HogRider360" width="560" height="315" src="https://www.youtube.com/embed/yVLfEHXQk08" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    
     <p id="HR"> Hog Rider 360 </p>
     <p id="hrbody"> Hog Rider 360, by Supercell </p>
     <p id="hrbody2"> Hog Rider 360 is a 3d video by SUPERCELL of the HOG RIDER from Clash Of Clans!!!</p>
@@ -122,4 +132,3 @@
 
 </body>
 </html>
-
