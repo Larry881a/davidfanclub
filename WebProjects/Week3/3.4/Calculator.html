@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+
+<input type="text" id="num1" placeholder="Enter first number">
+<input type="text" id="num2" placeholder="Enter second number">
+
+<br>
+
+<button onclick="addNumbers()">Add</button>
+
+
+<script>
+
+    function addNumbers() {
+        var number1 = parseFloat(document.getElementById('num1').value);
+        var number2 = parseFloat(document.getElementById('num2').value);
+        if (isNaN(number1) || isNaN(number2)) {
+            alert("Please enter valid numbers in both fields.");
+            return;
+        }
+        var sum = number1 + number2;
+        alert("The sum is: " + sum);
+    }
+
+ 
+
+
+</script>
+
+</body>
+</html>
