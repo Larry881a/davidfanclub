@@ -12,11 +12,25 @@
 <input type="text" id="num1" placeholder="Enter first number">
 <input type="text" id="num2" placeholder="Enter second number">
 
+
+
+
+
 <br>
 
 <button onclick="add()">Add</button>
 <button onclick="subtract()">Subtract</button>
+<button onclick="divide()">Divide</button>
+<button onclick="multiply()">Multiply</button>
+<br>
 
+<h1> Quadratic Formula </h1>
+
+
+<input type="text" id="a" placeholder="Enter a">
+<input type="text" id="b" placeholder="Enter b">
+<input type="text" id="c" placeholder="Enter c">
+<button onclick="calculateRoots()">Calculate Roots</button>
 
 <script>
 
@@ -40,6 +54,44 @@
         }
         var difference = number1 - number2;
         alert("The difference is: " + difference);
+    }
+
+
+    function divide(){
+        var number1 = parseFloat(document.getElementById('num1').value);
+        var number2 = parseFloat(document.getElementById('num2').value);
+        if (isNaN(number1) || isNaN(number2)) {
+            alert("Please enter valid numbers in both fields.");
+            return;
+        }
+        var quotient = number1 / number2;
+        alert("The quotient is: " + quotient    );
+    }
+
+ function multiply(){
+        var number1 = parseFloat(document.getElementById('num1').value);
+        var number2 = parseFloat(document.getElementById('num2').value);
+        if (isNaN(number1) || isNaN(number2)) {
+            alert("Please enter valid numbers in both fields.");
+            return;
+        }
+        var product = number1 * number2;
+        alert("The product is: " + product);
+    }
+
+    function quadraticcalculator(a, b, c) {
+        var inside = b * b - 4 * a * c;
+        if (inside < 0) {
+            return "No real roots";
+        } else {
+            var root1 = (-b + Math.sqrt(inside)) / (2 * a);
+            var root2 = (-b - Math.sqrt(inside)) / (2 * a);
+            return "Roots are: " + root1 + " and " + root2;
+        }
+    }
+
+    function calculateRoots() {
+        
     }
 
 
