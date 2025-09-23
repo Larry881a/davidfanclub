@@ -14,8 +14,9 @@
             transition: transform 1s ease, opacity 1s ease;
             z-index: 9999;
             pointer-events: none;
-            
-            object-fit: cover;
+            max-width: 100vw;
+            max-height: 100vh;
+            object-fit: contain;
         }
         #overlay-img.show {
             transform: translate(-50%, -50%) scale(1);
