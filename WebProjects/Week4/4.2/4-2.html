@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #overlay-img {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.1);
+            opacity: 0;
+            transition: transform 1s ease, opacity 1s ease;
+            z-index: 9999;
+            pointer-events: none;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+        }
+        #overlay-img.show {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+        #overlay-img.hide {
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+    </style>
+</head>
+<body>
+    <button onclick="showImage()">Show Image</button>
+    <img id="overlay-img" src="../../../img/airfry.png" alt="Overlay">
+
+    <script>
+        function showImage() {
+            const img = document.getElementById('overlay-img');
+            img.classList.add('show');
+            setTimeout(() => {
+                img.classList.add('hide');
+                img.classList.remove('show');
+            }, 1500); // Show for 1.5 seconds before fading
+            setTimeout(() => {
+                img.classList.remove('hide');
+            }, 2500); // Remove hide after fade out
+        }
+    </script>
+</body>
+</html>
