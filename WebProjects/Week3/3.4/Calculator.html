@@ -29,6 +29,21 @@
             background-color: rgba(255, 255, 255, 0.2); 
         }
 
+
+        #quadratic-formula {
+            left: 50%;
+            transform: translateX(-50%);
+            position: absolute;
+        }
+
+        .qfi {
+            left: 50%;
+            transform: translateX(-50%);
+            position: absolute;
+        }
+        
+
+
     </style>
 
 
@@ -58,12 +73,12 @@
 <br>
 <br><br><br>
 
-<h1> Quadratic Formula </h1>
+<h1 id="quadratic-formula"> Quadratic Formula </h1>
 
 
-<input type="text" id="a" placeholder="Enter a">
-<input type="text" id="b" placeholder="Enter b">
-<input type="text" id="c" placeholder="Enter c">
+<input type="text" class="qfi" placeholder="Enter a">
+<input type="text" class="qfi" placeholder="Enter b">
+<input type="text" class="qfi" placeholder="Enter c">
 <button onclick="calculateRoots()">Calculate Roots</button>
 
 <script>
