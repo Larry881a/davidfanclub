@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simple Dropdown Menu</title>
+<style>
+  /* Basic styling for the menu */
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    position: relative;
+    display: inline-block;
+  }
+
+  a {
+    display: block;
+    padding: 10px 20px;
+    background: #333;
+    color: white;
+    text-decoration: none;
+  }
+
+  a:hover {
+    background: #a00c0c;
+  }
+
+  /* Hide dropdown by default */
+  ul ul {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+  }
+
+  /* Show dropdown on hover */
+  li:hover > ul {
+    display: block;
+  }
+
+  /* Sub-items style */
+  ul ul li {
+    display: block;
+  }
+</style>
+</head>
+<body>
+
+<ul>
+  <li>
+    <a href="#">Menu</a>
+    <ul>
+      <li><a href="https://en.wikipedia.org/wiki/Hatsune_Miku"><img src="img/mikumikubeam.png" alt="Miku Miku Beam"></a></li>
+      <li><a href="https://www.thepeterboroughexaminer.com/news/its-toddler-time/article_c003c3b5-4774-5af5-bc4d-07b12ba10a33.html"><img src="img/mitchellurguy.png" alt="Mitchell Ur Guy"></a></li>
+      <li><a href="#">3</a></li>
+    </ul>
+  </li>
+</ul>
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+
+
+
+
+<form action="https://www.google.com/search" method="get" target="_blank">
+  <input type="text" name="q" placeholder="Search Google">
+  <input type="submit" value="Search">
+
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</html>

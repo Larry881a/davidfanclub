@@ -4,72 +4,178 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            margin-right: 20px;
+
+        }
+        .dropbtn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            background-image: url('img/downlad.png'); ;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 4px;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .dropdown-content .sub-dropdown {
+            position: relative;
+        }
+        .dropdown-content .sub-dropbtn {
+            background: none;
+            border: none;
+            color: #333;
+            padding: 10px 20px;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            font-size: 15px;
+        }
+        .dropdown-content .sub-dropdown-content {
+            display: none;
+            position: absolute;
+            left: 100%;
+            top: 0;
+            background-color: #f1f1f1;
+            min-width: 120px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            border-radius: 4px;
+        }
+        .sub-dropdown:hover .sub-dropdown-content {
+            display: block;
+        }
+        .sub-dropdown-content a {
+            display: block;
+            padding: 8px 16px;
+            color: #333;
+            text-decoration: none;
+            border-bottom: 1px solid #ddd;
+        }
+        .sub-dropdown-content a:last-child {
+            border-bottom: none;
+        }
+        .sub-dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        #WorkHeader {
+            text-align: center;
+            font-size: 24px;
+            margin-top: 20px;
+            color: #333;
+            font-family: Arial, sans-serif;
+            text-shadow: 1px 1px 2px #aaa;
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+            border: 2px solid #4CAF50;
+            letter-spacing: 1px;
+            word-spacing: 2px;
+            line-height: 1.5;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-style: italic;
+            transition: all 0.3s ease;
+
+        }
+        #home {
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 18px;
+            color: #4CAF50;
+            text-decoration: none;
+            font-family: 'Courier New', Courier, monospace;
+            transition: color 0.3s ease;
+            text-shadow: 1px 1px 2px #aaa;
+            background-color: #f0f0f0;
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 2px solid #4CAF50;
+            
+        }
+        body {
+            background-image: url('img/klent.png');
+           
+            
+            
+        }
 
 
-<style>
-    body {
-        background-image: url('img/klent.png');
-    }
-
-    #WorkHeader {
-        text-align: center;
-        font: 50px comic sans ms;
-        color: rgb(255, 0, 0);
-        text-shadow: 2px 2px 4px rgb(0, 0, 0);
-        border: 5px solid rgb(0, 0, 0);
-        border-radius: 10px;
-        background-color: rgb(255, 255, 255);
-        margin: 20px;
-        padding: 10px;
-    }
-
-    #home{
-        position: relative;
-        left: 700px;
-        text-decoration: none;
-        font: 32px comic sans ms;
-        color: rgb(255, 0, 0);
-        border: 4px solid rgb(0, 0, 0);
-        border-radius: 8px;
-        background-color: rgb(255, 255, 255);
-        padding: 10px;
-        box-shadow: 2px 2px 5px rgb(0, 0, 0);
-        transition: background-color 0.5s, color 0.5s;
-    }
-
-    #orkin{
-        position: relative;
-        left: 700px;
-        text-decoration: none;
-        font: 32px comic sans ms;
-        color: rgb(255, 0, 0);
-        border: 4px solid rgb(0, 0, 0);
-        border-radius: 8px;
-        background-color: rgb(255, 255, 255);
-        padding: 10px;
-        box-shadow: 2px 2px 5px rgb(0, 0, 0);
-        transition: background-color 0.5s, color 0.5s;
-    }
-
-</style>
 
 
-
-
-
-
-
-
-
-
-
+    </style>
 </head>
 <body>
-    
+
 <h1 id="WorkHeader">This is the second webpage</h1>
 <a href="index.html" id="home">Go back to the first webpage</a>
 
-<a href="WebProjects/Week3/3.4/Calculator.html" id="home">Go to the calculator webpage</a>
-<a href="WebProjects/Week4/4.2/4-2.html" id="orkin">Airfryer fan club</a>
+<br><br><br><br><br><br>
+
+<div class="dropdown">
+  <button class="dropbtn">Select Week</button>
+  <div class="dropdown-content">
+    <div class="sub-dropdown">
+      <button class="sub-dropbtn">Week 1</button>
+      <div class="sub-dropdown-content">
+        <a href="WebProjects/Week1/1.1/firstwebpage.html">Day 1</a>
+        <a href="WebProjects/Week1/1.2/secondwebpage.html">Day 2</a>
+        <a href="WebProjects/Week1/1.3/1-3.html">Day 3</a>
+
+      </div>
+    </div>
+    <div class="sub-dropdown">
+      <button class="sub-dropbtn">Week 2</button>
+      <div class="sub-dropdown-content">
+        <a href="WebProjects/Week2/2.1/2-1.html">Day 1</a>
+        <a href="WebProjects/Week2/2.2/2-2.html">Day 2</a>
+        <a href="WebProjects/Week2/2.3/2-3.html">Day 3</a>
+        <a href="WebProjects/Week2/2.4/2-4.html">Day 4</a>
+        <a href="WebProjects/Week2/2.5/2-5.html">Day 5</a>
+      </div>
+    </div>
+    <div class="sub-dropdown">
+      <button class="sub-dropbtn">Week 3</button>
+      <div class="sub-dropdown-content">
+        <a href="WebProjects/Week3/3.1/3-1.html">Day 1</a>
+        <a href="WebProjects/Week3/3.2/3-2.html">Day 2</a>
+        <a href="WebProjects/Week3/3.3/3-3.html">Day 3</a>
+        <a href="WebProjects/Week3/3.4/Calculator.html">Day 4</a>
+        <a href="WebProjects/Week3/3.5/3.6calc.html">Day 5</a>
+      </div>
+    </div>
+    <div class="sub-dropdown">
+      <button class="sub-dropbtn">Week 4</button>
+      <div class="sub-dropdown-content">
+        <a href="WebProjects/Week4/4.1/4-1.html">Day 1</a>
+        <a href="WebProjects/Week4/4.2/4-2.html">Day 2</a>
+        <a href="WebProjects/Week4/4.3/4-3.html">Day 3</a>
+        <a href="WebProjects/Week4/4.4/4-4.html">Day 4</a>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
