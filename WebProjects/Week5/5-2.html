@@ -64,10 +64,10 @@ body {
 }
 
  function showGrade() {
-        const score = document.getElementById('scoreInput').value;
-        const grade = grade(score);
-        alert("Your grade is " + grade);
-    }
+    const score = Number(document.getElementById('scoreInput').value);
+    const grade = grade(score);
+    alert("Your grade is " + grade);
+}
 
 </script>
 
