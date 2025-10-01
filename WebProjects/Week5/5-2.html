@@ -43,11 +43,7 @@ body {
 <button onclick="showGrade()">Get Grade</button>
 
 <script>
-    function showGrade() {
-        const score = document.getElementById('scoreInput').value;
-        const grade = grade(score);
-        alert("Your grade is " + grade);
-    }
+   
 
 
         // grader
@@ -66,12 +62,12 @@ body {
         return 'F';
     }
 }
-//score display
-function displayScore() {
-    const score = document.getElementById('scoreInput').value;
-    const grade = grade(score);
-    alert("Your grade is " + grade);
-}
+
+ function showGrade() {
+        const score = document.getElementById('scoreInput').value;
+        const grade = grade(score);
+        alert("Your grade is " + grade);
+    }
 
 </script>
 
