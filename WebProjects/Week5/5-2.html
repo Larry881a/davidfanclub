@@ -3,78 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Grade Calculator</title>
 
-<style>
+    <style>
+        #scoreInput {
+            width: 200px;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+        }
 
-#scoreInput {
-    width: 200px;
-    padding: 10px;
-    margin: 10px 0;
-    font-size: 16px;
-}
-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-}
-h1 {
-    font-family: Arial, sans-serif;
-}
-body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background-color: #f0f0f0;
-}
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
 
+        h1 {
+            font-family: Arial, sans-serif;
+        }
 
-</style>
-
-
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+    </style>
 </head>
 
 <body>
     <h1>Grade Calculator</h1>
 
-<input type="number" id="scoreInput" placeholder="Enter your score">
-<button onclick="showGrade()">Get Grade</button>
+    <input type="number" id="scoreInput" placeholder="Enter your score">
+    <button onclick="showGrade()">Get Grade</button>
 
-<script>
-   
+    <script>
+        // Grader function
+        function grade(score) {
+            if (score >= 90) {
+                return 'A';
+            } else if (score === 67) {
+                return 'Six Seven!';
+            } else if (score >= 80) {
+                return 'B';
+            } else if (score >= 70) {
+                return 'C';
+            } else if (score >= 60) {
+                return 'D';
+            } else {
+                return 'F';
+            }
+        }
 
+        function showGrade() {
+            const score = Number(document.getElementById('scoreInput').value);
 
-        // grader
-    function grade(score) {
-    if (score >= 90) {
-        return 'A';
-    } else if (score == 67) {
-        return 'Six Seven!';
-    } else if (score >= 80) {
-        return 'B';
-    } else if (score >= 70) {
-        return 'C';
-    } else if (score >= 60) {
-        return 'D';
-    } else {
-        return 'F';
-    }
-}
+            // Check if score is a valid number and not empty
+            if (isNaN(score) || score === "") {
+                alert("Please enter a valid score.");
+                return; // Prevent further execution if input is invalid
+            }
 
- function showGrade() {
-    const score = Number(document.getElementById('scoreInput').value);
-    const grade = grade(score);
-    alert("Your grade is " + grade);
-}
+            const gradeResult = grade(score);
 
-</script>
+            // Show the grade in an alert
+            alert("Your grade is: " + gradeResult);
+        }
+    </script>
 
-
-<br><br><br>
-<h1> Return to Selection </h1>
-<a href="../../schoolwork.html"> Main Page </a>
+    <br><br><br>
+    <h1>Return to Selection</h1>
+    <a href="../../schoolwork.html">Main Page</a>
 
 </body>
 </html>
