@@ -51,9 +51,11 @@ body {
 
 
         // grader
-        function grade(score) {
+    function grade(score) {
     if (score >= 90) {
         return 'A';
+    } else if (score == 67) {
+        return 'Six Seven!';
     } else if (score >= 80) {
         return 'B';
     } else if (score >= 70) {
@@ -64,8 +66,15 @@ body {
         return 'F';
     }
 }
+//score display
+function displayScore() {
+    const score = document.getElementById('scoreInput').value;
+    const grade = grade(score);
+    alert("Your grade is " + grade);
+}
 
 </script>
+
 
 <br><br><br>
 <h1> Return to Selection </h1>
