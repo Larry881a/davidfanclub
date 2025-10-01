@@ -47,12 +47,16 @@
                 return 'A';
             } else if (score === 67) {
                 return 'Six Seven!';
-            } else if (score >= 80) {
+            } else if (score > 100) {
+                return 'Invalid score';
+            }else if (score >= 80) {
                 return 'B';
             } else if (score >= 70) {
                 return 'C';
             } else if (score >= 60) {
                 return 'D';
+            } else if (score < 0) {
+                return 'Invalid score';
             } else {
                 return 'F';
             }
