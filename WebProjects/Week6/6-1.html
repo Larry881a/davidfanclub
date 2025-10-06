@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-image: url("../../img/yakub.png");
+        text-align: center;
+    }
+
+    select {
+        margin-bottom: 15px;
+        font-size: 16px;
+        padding: 5px;
+        
+    }
+
+    img {
+        margin-top: 20px;
+        border: 2px solid #ccc;
+        border-radius: 10px;
+    }
+
+    .flag {
+        width: 600px;
+        height: 350px;
+        object-fit: cover;
+         left: 50%;
+        transform: translateX(50%);
+    }
+    label
+    {
+        font-size: 20px;
+        font-weight: bold;
+        color: rgb(255, 0, 0);
+    }
+</style>
+
+
+
+</head>
+<body>
+
+
+<img id="Canada" class="flag" src="../../img/flags/Canada.png" alt="Canada Flag" style="display:none; width: 600px; height:350px;">
+<img id="USA" class="flag" src="../../img/flags/USUSUS.png" alt="USA Flag" style="display:none; width: 600px; height:350px;">
+<img id="Germany" class="flag" src="../../img/flags/Germany.png" alt="Germany Flag" style="display:none; width:600px; height: 350px;">
+<img id="Albania" class="flag" src="../../img/flags/albaina.png" alt="Albania Flag" style="display:none; width:600px; height: 350px;">
+<img id="Habsburg" class="flag" src="../../img/flags/Habsburg.png" alt="Habsburg Flag" style="display:none; width:600px; height:350px;">
+<img id="HRE" class="flag" src="../../img/flags/HRE.png" alt="HRE Flag" style="display:none; width:600px; height: 350px;">
+<img id="adamengland" class="flag" src="../../img/flags/adamenglnad.png" alt="Adam England Flag" style="display:none; width:600px; height: 350px;">
+
+
+<div>
+    <label for="countrySelect">Select a country:</label>
+    <select id="countrySelect" onchange="showFlag()">
+        <option value="" disabled selected>Select your option</option>
+        <option value="Canada">Canada</option>
+        <option value="USA">USA</option>
+        <option value="Germany">Germany</option>
+        <option value="Albania">Albania</option>
+        <option value="Habsburg">Habsburg</option>
+        <option value="HRE">Holy Roman Empire</option>
+        <option value="adamengland">United Kingdom</option>
+    </select>
+
+
+
+<script>
+    function showFlag() {
+        // Hide all flags
+        document.getElementById("Canada").style.display = "none";
+        document.getElementById("USA").style.display = "none";
+        document.getElementById("Germany").style.display = "none";
+        document.getElementById("Albania").style.display = "none";
+        document.getElementById("Habsburg").style.display = "none";
+        document.getElementById("HRE").style.display = "none";
+        document.getElementById("adamengland").style.display = "none";
+
+        // Get the selected country
+        var country = document.getElementById("countrySelect").value;
+
+        // Show the selected flag
+        if (country) {
+            document.getElementById(country).style.display = "block";
+        }
+    }
+
+
+</script>
+
+
+
+
+</body>
+</html>

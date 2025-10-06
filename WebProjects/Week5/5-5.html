@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+<style>
+    img {
+        width: 300px;
+        height: auto;
+    }
+    button {
+        margin-bottom: 10px;
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+
+    a {
+        font-size: 20px;
+        color: blue;
+        position: absolute;
+
+        top: 500px;
+
+    }
+
+</style>
+
+
+</head>
+<body>
+    
+
+
+<button id="changePic">Change Picture</button>
+<br>
+<img id="picture" src="../../img/airfry.png" alt="Picture" />
+
+
+<script>
+
+    let picArray = ["../../img/airfry.png", "../../img/mikumikubeam.png", "../../img/klent.png"];
+    let picIndex = 0;
+
+    document.getElementById("changePic").addEventListener("click", function() {
+        picIndex++;
+        if (picIndex >= picArray.length) {
+            picIndex = 0;
+        }
+        document.getElementById("picture").src = picArray[picIndex];
+    });
+
+
+</script>
+<br><br><br>
+<a href="../../schoolwork.html">Back to Main</a>
+</body>
+</html>
