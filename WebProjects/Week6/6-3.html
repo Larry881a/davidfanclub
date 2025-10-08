@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+<style>
+
+label {
+    font-size: 18px;
+    display: block;
+    text-align: center;
+    background-color: aliceblue;
+}
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+    
+}
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-image: url('../../img/youcvantseeme.png');
+}
+
+
+</style>
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<label>
+    <input type="radio" id="male" name="gender" value="male">
+    Male
+</label><br>
+
+<label>
+    <input type="radio" id="female" name="gender" value="female">
+    Female
+</label><br>
+
+<label>
+    Age: <input type="text" id="age">
+</label><br>
+
+<label>
+    Quantity: <input type="number" id="quantity" value="1">
+</label><br><br>
+
+<button onclick="calculatePrice()">Calculate Price</button>
+
+
+
+<br>
+<a href="../../schoolwork.html">Back to Home</a>
+  <script>
+
+    function calculatePrice() {
+    const age = document.getElementById('age').value;
+    const quantity = parseInt(document.getElementById('quantity').value);
+
+    let gender = "";
+    const genderRadios = document.getElementsByName('gender');
+    for (let i = 0; i < genderRadios.length; i++) {
+        if (genderRadios[i].checked) {
+            gender = genderRadios[i].value;
+            break;
+        }
+    }
+
+    let pricePerTicket = 21; 
+    let discount = 0;
+
+    if (gender === 'female' && age >= 13 && age <= 64) {
+        discount += 0.25; 
+    }
+
+    pricePerTicket -= pricePerTicket * discount;
+    const totalPrice = pricePerTicket * quantity;
+    alert(`Total price: $${totalPrice.toFixed(2)}`);
+}
+
+
+  </script>
+</body>
+
+</html>
