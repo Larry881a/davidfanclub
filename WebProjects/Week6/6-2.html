@@ -74,7 +74,6 @@ body {
     const age = document.getElementById('age').value;
     const quantity = parseInt(document.getElementById('quantity').value);
 
-    // Get selected gender
     let gender = "";
     const genderRadios = document.getElementsByName('gender');
     for (let i = 0; i < genderRadios.length; i++) {
@@ -87,7 +86,7 @@ body {
     let pricePerTicket = 21; 
     let discount = 0;
 
-    // Example: apply discounts based on age value
+    
     if (age <= 12) {
         discount += 0.5; 
     } else if (age >= 65) {
