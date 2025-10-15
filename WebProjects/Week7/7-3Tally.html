@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+   <h1>Tally Counter</h1>
+
+    <button id="tallyButton">Calculate Average</button>
+    <h2>Average of Random Numbers</h2>
+   <p id="tallyDisplay">0</p>
+
+    <h2>Last 5 Averages</h2>
+    <ul id="averageList"></ul>
+
+
+
+<!-- Write a program that goes through a loop 10 times.
+Each time through the loop generate a random whole number between 1-10.
+Maintain a running total or tally of the generated random numbers.
+After the loop is complete, divide the tally by the number of times through the loop and display the result as an average.
+Also make it display the last 5 averages calculated.
+--> 
+
+<script>
+    const averages = [];
+    document.getElementById("tallyButton").addEventListener("click", function() {
+        let tally = 0;
+        const iterations = 10;
+
+        for (let i = 0; i < iterations; i++) {
+            const randomNum = Math.floor(Math.random() * 10) + 1;
+            tally += randomNum;
+        }
+
+        const average = tally / iterations;
+        document.getElementById("tallyDisplay").textContent = "Average: " + average.toFixed(2);
+
+     
+        averages.push(average);
+        if (averages.length > 5) {
+            averages.shift(); 
+        }
+
+       
+        const averageList = document.getElementById("averageList");
+        averageList.innerHTML = ""; 
+
+        for (let i = 0; i < averages.length; i++) {
+            const listItem = document.createElement("li");
+            listItem.textContent = "Average " + (i + 1) + ": " + averages[i].toFixed(2);
+            averageList.appendChild(listItem);
+        }
+    });
+</script>
+
+</body>
+</html>
