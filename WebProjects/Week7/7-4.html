@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Class Marks</title>
+  <style>
+    :root{--bg:#f7f9fb;--card:#fff;--accent:#2b7a78;--muted:#666}
+    body{font-family:system-ui,Segoe UI,Roboto,Arial;display:flex;align-items:center;justify-content:center;padding:24px;background:var(--bg);min-height:100vh}
+    .card{background:var(--card);padding:20px;border-radius:10px;box-shadow:0 6px 20px rgba(16,24,40,.08);width:100%;max-width:620px}
+    h1{margin:0 0 12px;font-size:20px;color:var(--accent)}
+    form{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+    .radios{display:flex;gap:8px;align-items:center}
+    label.radio{display:flex;align-items:center;gap:6px;background:#f1f6f8;padding:6px 10px;border-radius:6px;cursor:pointer}
+    input[type="number"]{width:120px;padding:8px;border-radius:6px;border:1px solid #d6e1e8}
+    .controls{display:flex;gap:8px}
+    button{background:var(--accent);color:#fff;border:none;padding:8px 12px;border-radius:8px;cursor:pointer}
+    button.secondary{background:#e9eef0;color:#000}
+    .status{margin-top:12px;color:var(--muted)}
+    #entries{margin-top:12px;padding:10px;background:#fbfdfe;border-radius:8px;max-height:180px;overflow:auto;border:1px solid #eef5f6}
+    .entry{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #eef5f6}
+    .entry:last-child{border-bottom:none}
+    #result{margin-top:12px;font-weight:600}
+    .small{font-size:13px;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Enter marks for 10 students</h1>
+
+    <form id="marksForm" onsubmit="return false;">
+      <div class="radios" aria-label="Gender">
+        <label class="radio"><input type="radio" name="gender" value="Male"> Male</label>
+        <label class="radio"><input type="radio" name="gender" value="Female"> Female</label>
+      </div>
+
+      <input type="number" id="marks" placeholder="Marks (0-100)" min="0" max="100" step="0.1" aria-label="Marks" />
+
+      <div class="controls">
+        <button id="submitBtn" type="button">Submit</button>
+        <button id="undoBtn" type="button" class="secondary">Undo</button>
+        <button id="resetBtn" type="button" class="secondary">Reset</button>
+      </div>
+    </form>
+
+    <p class="status"><span id="countDisplay">Entries: 0 / 10</span> <span class="small"> — use Enter to submit</span></p>
+
+    <div id="entries" aria-live="polite"></div>
+
+    <div id="result" aria-live="polite"></div>
+  </div>
+
+  <script>
+    const MAX_ENTRIES = 10;
+    const submitBtn = document.getElementById('submitBtn');
+    const undoBtn = document.getElementById('undoBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const marksInput = document.getElementById('marks');
+    const entriesEl = document.getElementById('entries');
+    const countDisplay = document.getElementById('countDisplay');
+    const resultEl = document.getElementById('result');
+
+    let totalMarksM = 0, totalMarksF = 0;
+    let entryCountM = 0, entryCountF = 0;
+    let totalEntries = 0;
+    const history = []; // store { gender, marks }
+
+    function updateUI() {
+      countDisplay.textContent = `Entries: ${totalEntries} / ${MAX_ENTRIES}`;
+      entriesEl.innerHTML = history.map((h, i) =>
+        `<div class="entry"><div>${i+1}. ${h.gender} — ${Number(h.marks).toFixed(1)}</div><div><button data-idx="${i}" class="smallBtn">Remove</button></div></div>`
+      ).join('') || '<div class="small">No entries yet</div>';
+
+      // Attach remove handlers to each remove button
+      entriesEl.querySelectorAll('.smallBtn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const idx = Number(e.target.dataset.idx);
+          removeEntry(idx);
+        });
+      });
+
+      // disable submit when full
+      submitBtn.disabled = totalEntries >= MAX_ENTRIES;
+      marksInput.disabled = totalEntries >= MAX_ENTRIES;
+      if (totalEntries >= MAX_ENTRIES) calculateAverages();
+    }
+
+    function addEntry(gender, marks) {
+      // validation
+      if (!gender) { alert('Select gender.'); return; }
+      if (isNaN(marks) || marks === '' || marks < 0 || marks > 100) { alert('Enter marks between 0 and 100.'); return; }
+      if (totalEntries >= MAX_ENTRIES) { alert('Maximum entries reached.'); return; }
+
+      history.push({ gender, marks: Number(marks) });
+      if (gender === 'Male') { totalMarksM += Number(marks); entryCountM++; }
+      else { totalMarksF += Number(marks); entryCountF++; }
+      totalEntries++;
+      marksInput.value = '';
+      document.querySelector('input[name="gender"]:checked').checked = false;
+      updateUI();
+      marksInput.focus();
+    }
+
+    function removeEntry(index) {
+      const removed = history.splice(index, 1)[0];
+      if (!removed) return;
+      if (removed.gender === 'Male') { totalMarksM -= removed.marks; entryCountM--; }
+      else { totalMarksF -= removed.marks; entryCountF--; }
+      totalEntries--;
+      updateUI();
+    }
+
+    function undoLast() {
+      if (history.length === 0) return alert('No entries to undo.');
+      removeEntry(history.length - 1);
+    }
+
+    function resetAll() {
+      if (!confirm('Reset all entries?')) return;
+      totalMarksM = totalMarksF = entryCountM = entryCountF = totalEntries = 0;
+      history.length = 0;
+      resultEl.textContent = '';
+      marksInput.value = '';
+      updateUI();
+      marksInput.focus();
+    }
+
+    function calculateAverages() {
+      if (totalEntries < MAX_ENTRIES) {
+        resultEl.textContent = 'Please enter marks for all 10 students first.';
+        return;
+      }
+      const avgM = entryCountM ? (totalMarksM / entryCountM).toFixed(2) : 'No data';
+      const avgF = entryCountF ? (totalMarksF / entryCountF).toFixed(2) : 'No data';
+      resultEl.innerHTML = `<div>Average marks for Male: ${avgM}</div><div>Average marks for Female: ${avgF}</div>`;
+    }
+
+    submitBtn.addEventListener('click', () => {
+      const genderEl = document.querySelector('input[name="gender"]:checked');
+      const gender = genderEl ? genderEl.value : null;
+      const marks = marksInput.value;
+      addEntry(gender, marks);
+    });
+
+    undoBtn.addEventListener('click', undoLast);
+    resetBtn.addEventListener('click', resetAll);
+
+    // allow Enter to submit
+    marksInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        submitBtn.click();
+      }
+    });
+
+    // initial UI
+    updateUI();
+    marksInput.focus();
+  </script>
+</body>
+</html>
