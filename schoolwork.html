@@ -126,28 +126,38 @@
             margin-right: auto;
             width: 300px;
         }
+        #fileInput {
+            display: block;
+            margin: 20px auto;
+          }
 
+        </style>
+      </head>
+      <body>
 
-    </style>
-</head>
-<body>
+      <h1 id="WorkHeader">This is the second webpage</h1>
+      <a href="index.html" id="home">Go back to the first webpage</a>
+      <br>
 
-<h1 id="WorkHeader">This is the second webpage</h1>
-<a href="index.html" id="home">Go back to the first webpage</a>
-<br>
-<img src="img/vril.png" alt="to" id="vril">
+      <label for="fileInput"></label>
+      <img src="img/vril.png" alt="Upload" id="vril" style="cursor: pointer;">
+      <input type="file" id="fileInput" style="display: none;">
+      <script>
+      document.getElementById('vril').addEventListener('click', function(){
+        document.getElementById('fileInput').click();
+      });
+      </script>
 
-<div class="dropdown">
-  <button class="dropbtn">Select Week</button>
-  <div class="dropdown-content">
-    <div class="sub-dropdown">
-      <button class="sub-dropbtn">Week 1</button>
-      <div class="sub-dropdown-content">
-        <a href="WebProjects/Week1/1.1/firstwebpage.html">Day 1</a>
-        <a href="WebProjects/Week1/1.2/secondwebpage.html">Day 2</a>
-        <a href="WebProjects/Week1/1.3/1-3.html">Day 3</a>
-
-      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Select Week</button>
+        <div class="dropdown-content">
+        <div class="sub-dropdown">
+          <button class="sub-dropbtn">Week 1</button>
+          <div class="sub-dropdown-content">
+          <a href="WebProjects/Week1/1.1/firstwebpage.html">Day 1</a>
+          <a href="WebProjects/Week1/1.2/secondwebpage.html">Day 2</a>
+          <a href="WebProjects/Week1/1.3/1-3.html">Day 3</a>
+          </div>
     </div>
     <div class="sub-dropdown">
       <button class="sub-dropbtn">Week 2</button>
@@ -238,6 +248,8 @@
         <a href="WebProjects/Week10/10-5.html">Day 5</a>
       </div>
 </div>
+
+
 
 </body>
 </html>
