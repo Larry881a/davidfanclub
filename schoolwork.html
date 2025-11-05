@@ -143,10 +143,39 @@
       <img src="img/vril.png" alt="Upload" id="vril" style="cursor: pointer;">
       <input type="file" id="fileInput" style="display: none;">
       <script>
-      document.getElementById('vril').addEventListener('click', function(){
-        document.getElementById('fileInput').click();
-      });
-      </script>
+
+  document.getElementById('vril').addEventListener('click', function(){
+    document.getElementById('fileInput').click();
+  });
+
+ 
+  document.getElementById('fileInput').addEventListener('change', function(e) {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+      const text = String(evt.target.result).trim();
+
+      
+      if (text === 'Password') {
+        
+        window.open('WebProjects/secret.html', '_blank');
+      } else {
+        alert('Password not found in file.');
+      }
+
+      
+      e.target.value = '';
+    };
+    reader.onerror = function() {
+      alert('Failed to read file.');
+    };
+
+    
+    reader.readAsText(file);
+  });
+</script>
 
       <div class="dropdown">
         <button class="dropbtn">Select Week</button>
