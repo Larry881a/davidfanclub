@@ -6,49 +6,183 @@
     <title>Document</title>
 <style>
     body {
-        background-image: url("../../img/downlad.png");
-        background-repeat: no-repeat;
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-image: url('../../img/housemd.png');
         background-size: cover;
+        background-attachment: fixed;
+        
     }
+
+    #studentform {
+        background: rgba(255,255,255,0.9);
+        padding: 12px;
+        border-radius: 6px;
+        max-width: 420px;
+    }
+
+    label { display:block; margin-top:8px; }
+    input[type="text"], input[type="email"], input[type="number"] {
+        width:100%; padding:6px; margin-top:4px; box-sizing:border-box;
+    }
+
+    .controls { margin-top:10px; }
+    button { padding:8px 12px; margin-right:8px; }
+    #studentList { margin-top:16px;
     
+    }
 
+    #okran {
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        width: 300px;
+        opacity: 0.8;
+    }
 
+    #freeman {
+        position: fixed;
+        bottom: 10px;
+        left: 10px;
+        width: 150px;
+        opacity: 0.8;
+    }
 
 </style>
-
 </head>
 <body>
+
+    <div id="studentform">
+        <form id="form" onsubmit="return false;">
+            <label for="Firstname">First Name:</label>
+            <input type="text" id="Firstname" name="Firstname" required>
+
+            <label for="Lastname">Last Name:</label>
+            <input type="text" id="Lastname" name="Lastname" required>
+
+            <label for="Age">Age:</label>
+            <input type="number" id="Age" name="Age" min="0" required>
+
+            <label for="Email">Email:</label>
+            <input type="email" id="Email" name="Email" required>
+
+            <div class="controls">
+                <button id="addBtn" type="button">Add Student</button>
+                <button id="exportBtn" type="button">Export to TXT</button>
+                <button id="clearBtn" type="button">Clear All</button>
+            </div>
+        </form>
+    </div>
+
+
+<img src="../../img/okran.png" id = 'okran' alt="okran" >
+<img src ="../../img/nobgfreeman.png" id = 'freeman' alt="freeman" >
+<script>
     
-<h1> Insert Student Information </h1>
+    const students = [];
 
+    
+    class Student {
+        constructor(firstname, lastname, age, email) {
+            this.firstname = firstname;
+            this.lastname = lastname;
+            this.age = Number(age);
+            this.email = email;
+        }
+    }
 
-<div>
-    First name
-    <br>
-    <input type="text" placeholder="Enter First Name"></input> 
-</div>
+   
+    function getInput(id) {
+        return document.getElementById(id);
+    }
 
-<div>
-    Last name
-    <br>
-    <input type="text" placeholder="Enter First Name"></input> 
-</div>
+    function addStudent() {
+        const firstname = getInput('Firstname').value.trim();
+        const lastname = getInput('Lastname').value.trim();
+        const age = getInput('Age').value;
+        const email = getInput('Email').value.trim();
 
+    
+        if (!firstname || !lastname || age === '' || isNaN(age) || !email) {
+            alert('Please fill in all fields correctly.');
+            return;
+        }
 
-<div id="nosebutton">
-    <button type="button"> Submit </button>
-</div>
+        const student = new Student(firstname, lastname, age, email);
+        students.push(student);
+        clearInputs();
+        displayStudents();
+    }
 
+    function displayStudents() {
+        const container = getOrCreateStudentList();
+        if (students.length === 0) {
+            container.innerHTML = '<p>No students added yet.</p>';
+            return;
+        }
+        let output = '<h2>Student List:</h2><ul>';
+        for (const s of students) {
+            output += `<li>${escapeHtml(s.firstname)} ${escapeHtml(s.lastname)}, Age: ${s.age}, Email: ${escapeHtml(s.email)}</li>`;
+        }
+        output += '</ul>';
+        container.innerHTML = output;
+    }
 
+    function exportToTxt() {
+        if (students.length === 0) {
+            alert('No students to export.');
+            return;
+        }
+        let txt = "Student List:\n";
+        for (const s of students) {
+            txt += `${s.firstname} ${s.lastname}, Age: ${s.age}, Email: ${s.email}\n`;
+        }
+        const blob = new Blob([txt], { type: "text/plain" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "students.txt";
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+    }
 
+    function clearAll() {
+        if (!confirm('Clear all students?')) return;
+        students.length = 0;
+        displayStudents();
+    }
 
+    function clearInputs() {
+        getInput('Firstname').value = '';
+        getInput('Lastname').value = '';
+        getInput('Age').value = '';
+        getInput('Email').value = '';
+        getInput('Firstname').focus();
+    }
 
+    function getOrCreateStudentList() {
+        let el = document.getElementById('studentList');
+        if (!el) {
+            el = document.createElement('div');
+            el.id = 'studentList';
+            document.body.appendChild(el);
+        }
+        return el;
+    }
 
+    function escapeHtml(str) {
+        return String(str).replace(/[&<>"']/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+    }
 
+   
+    document.getElementById('addBtn').addEventListener('click', addStudent);
+    document.getElementById('exportBtn').addEventListener('click', exportToTxt);
+    document.getElementById('clearBtn').addEventListener('click', clearAll);
 
-
-
-
+    
+    displayStudents();
+    getInput('Firstname').focus();
+</script>
 
 </body>
 </html>
