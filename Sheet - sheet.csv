@@ -1,0 +1,101 @@
+ID,Location,Date,Coalition_Members,French_Members,Casualties,Victor
+1,"Montenotte, Italy",12 April 1796,"Austria, Kingdom of Sardinia",France,"3,700",French
+2,"Millesimo, Italy",13–14 April 1796,"Austria, Kingdom of Sardinia",France,"4,200",French
+3,"Dego, Italy",14–15 April 1796,Austria,France,"7,195",French
+4,"Mondovì, Italy",21 April 1796,Kingdom of Sardinia,France,"2,700",French
+5,"Lodi, Italy",10 May 1796,Austria,France,"3,100",French
+6,"Castiglione, Italy",5 August 1796,Austria,France,"15,000",French
+7,"Bassano, Italy",8 September 1796,Austria,France,"12,000",French
+8,"Arcole, Italy",15–17 November 1796,Austria,France,"11,000",French
+9,"Rivoli, Italy",14–15 January 1797,Austria,France,"14,000",French
+10,"Pyramids, Egypt",21 July 1798,Mamluks (Ottoman nominal),France,"10,000",French
+11,"Nile (Naval), Egypt",1–3 August 1798,"Great Britain, Ottoman Empire",France,"10,000",Coalition
+12,"Jaffa (Siege), Ottoman Syria",3–7 March 1799,Ottoman Empire,France,"4,000",French
+13,"Acre (Siege), Ottoman Syria",20 March – 21 May 1799,"Ottoman Empire, Great Britain",France,"11,000",Coalition
+14,"Fort of Bard, Italy",May - June 1800,Austria,France,1500,French
+15,"Marengo, Italy",14 June 1800,Austria,France,"20,000",French
+16,"Hohenlinden, Germany",3 December 1800,"Austria, Bavaria",France,"23,000",French
+17,"Trafalgar (Naval), Spain",21 October 1805,Great Britain,"France, Spain","7,800",Coalition
+18,"Ulm, Germany",16–19 October 1805,Austria,France,"25,000",French
+19,"Caldiero, Italy",30 October 1805,Austria,France,"11,000",French
+20,"Diernstein, Austria",11 November 1805,"Austria, Russia",France,"4,000",Debated
+21,"Austerlitz, Czech Rep.",2 December 1805,"Austria, Russia",France,"36,000",French
+22,"Castelnuovo, Italy",13 January 1806,Austria,France,"3,000",Coalition
+23,"Maida, Italy",4 July 1806,"Great Britain, Naples",France,"6,300",Coalition
+24,"Saalfeld, Germany",10 October 1806,Prussia,France,"1,100",French
+25,"Jena, Germany",14 October 1806,"Prussia, Saxony",France,"25,000",French
+26,"Auerstedt, Germany",14 October 1806,"Prussia, Saxony",France,"20,000",French
+27,"Lübeck, Germany",6–7 November 1806,Prussia,France,"15,000",French
+28,"Gawron, Poland",23 December 1806,Prussia,France,"1,000",French
+29,"Czarnowo, Poland",23–24 December 1806,Russia,France,"5,000",French
+30,"Pultusk, Poland",26 December 1806,Russia,France,"8,000",French
+31,"Mohrungen, Prussia (Poland)",25 January 1807,Russia,France,"3,000",French
+32,"Braunsberg, Prussia (Poland)",26 February 1807,Prussia,France,"3,700",French
+33,"Eylau, Prussia (Russia)",7–8 February 1807,"Russia, Prussia",France,"30,000–50,000",Inconclusive
+34,"Guttstadt, Prussia (Poland)",5–6 June 1807,Russia,France,"6,000",Coalition
+35,"Heilsberg, Prussia (Poland)",10 June 1807,"Russia, Prussia",France,"25,000",Inconclusive
+36,"Friedland, Prussia (Russia)",14 June 1807,"Russia, Prussia",France,"43,000",French
+37,"Rolica, Portugal",17 August 1808,"Great Britain, Portugal",France,"4,200",Coalition
+38,"Vimeiro, Portugal",21 August 1808,"Great Britain, Portugal",France,"4,200",Coalition
+39,"Bailén, Spain",19 July 1808,Spain,France,"20,000",Coalition
+40,"Zaragoza (Siege), Spain",15 June – 14 August 1808,Spain,France,"11,000",Coalition
+41,"Zornosa, Spain",31 October 1808,Spain,France,"2,800",French
+42,"Tudela, Spain",23 November 1808,Spain,France,"7,000",French
+43,"Somosierra, Spain",30 November 1808,Spain,France,"2,500",French
+44,"Uclés, Spain",13 January 1809,Spain,France,"12,000",French
+45,"Corunna, Spain",16 January 1809,Great Britain,France,"5,500",French
+46,"Medellín, Spain",28 March 1809,Spain,France,"12,000",French
+47,"Sacaile, Italy",16 April 1809,Austria,France (Ital/Saxon allies),"6,500",Coalition
+48,"Abensberg, Germany",19–20 April 1809,Austria,France,"8,000",French
+49,"Landshut, Germany",21 April 1809,Austria,France,"10,000",Coalition (1st) French (2nd)
+50,"Eckmühl, Germany",22 April 1809,Austria,France,"10,000",French
+51,"Ebersberg, Austria",3 May 1809,Austria,France,"6,500",French
+52,"Aspern-Essling, Austria",21–22 May 1809,Austria,France,"48,000",Coalition
+53,"Bergisel, Austria (Tyrol)",25 May 1809,Austria (Tyrolean rebels),"France, Bavaria","1,500","Coalition (1st, 3rd) French (2nd, 4th)"
+54,"Raab, Hungary",14 June 1809,Austria,France,"7,600",French
+55,"Wagram, Austria",5–6 July 1809,Austria,France,"80,000",French
+56,"Znaim, Czech Rep.",10–11 July 1809,Austria,France,"18,000",Inconclusive
+57,"Talavera, Spain",27–28 July 1809,"Great Britain, Spain",France,"15,000",Coalition
+58,"Ocaña, Spain",19 November 1809,Spain,France,"19,000",French
+59,"Astorga (Siege), Spain",21 March – 22 April 1810,Spain,France,"5,800",French
+60,"Bussaco, Portugal",27 September 1810,"Great Britain, Portugal",France,"6,000",Coalition
+61,"Barrosa, Spain",5 March 1811,"Great Britain, Spain, Portugal",France,"5,000",Coalition
+62,"Fuentes de Oñoro, Spain",3–5 May 1811,"Great Britain, Portugal",France,"7,500",Coalltion
+63,"Albuera, Spain",16 May 1811,"Great Britain, Spain, Portugal",France,"15,000",Inconclusive
+64,"El Bodón, Spain",24 September 1811,"Great Britain, Portugal",France,600,French
+65,"Tarifa (Siege), Spain",20 December 1811 – 5 January 1812,"Great Britain, Spain",France,"2,500",Coalition
+66,"Ciudad Rodrigo (Siege), Spain",7–19 January 1812,"Great Britain, Portugal",France,"4,000",Coalition
+67,"Badajoz (Siege), Spain",16 March – 6 April 1812,"Great Britain, Portugal",France,"13,000",Coalition
+68,"Almaraz, Spain",18–19 May 1812,"Great Britain, Portugal",France,"2,000",Coalition
+69,"Salamanca, Spain",22 July 1812,"Great Britain, Portugal, Spain",France,"20,000",Coalition
+70,"Smolensk, Russia",16–18 August 1812,Russia,France,"19,000",French
+71,"Polotsk (1st), Belarus",17–18 August 1812,Russia,France,"11,000",Inconclusive
+72,"Borodino, Russia",7 September 1812,Russia,France,"70,000",French
+73,"Maloyaroslavets, Russia",24 October 1812,Russia,France,"8,000",French
+74,"Vyazma, Russia",3 November 1812,Russia,France,"11,000",Coalition
+75,"Krasnoi, Russia",15–18 November 1812,Russia,France,"12,000",Coalition
+76,"Berezina, Belarus",26–29 November 1812,Russia,France,"36,000",Inconclusive
+77,"Lützen, Germany",2 May 1813,"Russia, Prussia",France,"30,000",French
+78,"Bautzen, Germany",20–21 May 1813,"Russia, Prussia",France,"20,000",French
+79,"Vitoria, Spain",21 June 1813,"Great Britain, Spain, Portugal",France,"13,000",Coalition
+80,"Dresden, Germany",26–27 August 1813,"Austria, Russia, Prussia",France,"38,000",French
+81,"Kulm, Czech Rep.",29–30 August 1813,"Austria, Russia, Prussia",France,"20,000",Coalition
+82,"Dennewitz, Germany",6 September 1813,"Prussia, Sweden",France (Saxony/Württemberg allies),"20,000",Coalition
+83,"Leipzig (Nations), Germany",16–19 October 1813,"Austria, Prussia, Russia, Sweden",France,"100,000+",Coalition
+84,"Hanau, Germany",30–31 October 1813,"Bavaria, Austria",France,"10,000",French
+85,"La Rothière, France",1 February 1814,"Austria, Russia, Prussia",France,"8,000",Coalition
+86,"Montmirail, France",11 February 1814,"Russia, Prussia",France,"6,500",French
+87,"Vauchamps, France",14 February 1814,"Prussia, Russia",France,"10,000",French
+88,"Orthez, France",27 February 1814,"Great Britain, Portugal, Spain",France,"7,000",Coalition
+89,"Craonne, France",7 March 1814,"Russia, Prussia",France,"12,000",French
+90,"Laon, France",9–10 March 1814,"Prussia, Russia",France,"12,000",Coalition
+91,"Arcis-sur-Aube, France",20–21 March 1814,"Austria, Russia, Bavaria",France,"5,000",Coalition
+92,"Fère-Champenoise, France",25 March 1814,"Russia, Austria",France,"12,000",Coalition
+93,"Paris (Fall of), France",30–31 March 1814,"Russia, Prussia, Austria",France,"18,000",Coalition
+94,"Toulouse, France",10 April 1814,"Great Britain, Portugal, Spain",France,"10,000",Coalition
+95,"Quatre Bras, Belgium",16 June 1815,"Great Britain, Netherlands",France,"8,500",Inconclusive
+96,"Ligny, Belgium",16 June 1815,Prussia,France,"23,000",French
+97,"Braine-l'Alleud, Belgium",18 June 1815,"Great Britain, Netherlands",France,"2,500",Coalition
+98,"Waterloo, Belgium",18 June 1815,"Great Britain, Prussia, Netherlands",France,"47,000",Coalition
+99,"Wavre, Belgium",18–19 June 1815,Prussia,France,"7,000",French
+100,"Rocquencourt, France",1 July 1815,Prussia,France,"1,000",French
