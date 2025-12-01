@@ -14,7 +14,6 @@
     
     <script type="text/babel">
         const { useState, useEffect } = React;
-        const { Upload, Play, Plus, Database, Search } = window.lucide;
 
         const NapoleonicSQLTool = () => {
           const [data, setData] = useState([]);
@@ -347,19 +346,12 @@
             }
           ];
 
-          // Create simple icon components since lucide-react isn't available
-          const UploadIcon = () => <span>📤</span>;
-          const PlayIcon = () => <span>▶️</span>;
-          const PlusIcon = () => <span>➕</span>;
-          const DatabaseIcon = () => <span>🗄️</span>;
-          const SearchIcon = () => <span>🔍</span>;
-
           return (
             <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-6">
               <div className="max-w-7xl mx-auto">
                 <div className="bg-slate-800 rounded-lg shadow-2xl p-6 mb-6 border border-slate-700">
                   <h1 className="text-3xl font-bold text-amber-400 mb-2 flex items-center gap-3">
-                    <DatabaseIcon />
+                    <span className="text-4xl">🗄️</span>
                     Napoleonic Wars Battle Database
                   </h1>
                   <p className="text-slate-300">SQL Query Tool - 100 Historic Battles</p>
@@ -368,7 +360,7 @@
                 {/* File Upload */}
                 <div className="bg-slate-800 rounded-lg shadow-xl p-6 mb-6 border border-slate-700">
                   <h2 className="text-xl font-semibold text-amber-400 mb-4 flex items-center gap-2">
-                    <UploadIcon />
+                    <span className="text-2xl">📤</span>
                     Upload CSV File
                   </h2>
                   <input
@@ -383,7 +375,7 @@
                 {/* Add New Row */}
                 <div className="bg-slate-800 rounded-lg shadow-xl p-6 mb-6 border border-slate-700">
                   <h2 className="text-xl font-semibold text-amber-400 mb-4 flex items-center gap-2">
-                    <PlusIcon />
+                    <span className="text-2xl">➕</span>
                     Add New Battle
                   </h2>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -448,7 +440,7 @@
                 {/* Custom SQL Query */}
                 <div className="bg-slate-800 rounded-lg shadow-xl p-6 mb-6 border border-slate-700">
                   <h2 className="text-xl font-semibold text-amber-400 mb-4 flex items-center gap-2">
-                    <SearchIcon />
+                    <span className="text-2xl">🔍</span>
                     Custom SQL Query
                   </h2>
                   <div className="flex gap-2">
@@ -463,7 +455,7 @@
                       onClick={() => executeSQL(sqlQuery)}
                       className="px-6 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded font-semibold transition-colors flex items-center gap-2"
                     >
-                      <PlayIcon />
+                      <span>▶️</span>
                       Run
                     </button>
                   </div>
