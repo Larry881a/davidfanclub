@@ -303,6 +303,38 @@
             setError('');
           };
 
+          const downloadCSV = () => {
+            if (data.length === 0) {
+              setError('No data to download');
+              return;
+            }
+
+            const headers = Object.keys(data[0]);
+            const csvContent = [
+              headers.join(','),
+              ...data.map(row => {
+                return headers.map(header => {
+                  const value = row[header];
+                  // Wrap values with commas or quotes in quotes
+                  if (value && (value.includes(',') || value.includes('"') || value.includes('\n'))) {
+                    return `"${value.replace(/"/g, '""')}"`;
+                  }
+                  return value;
+                }).join(',');
+              })
+            ].join('\n');
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', 'napoleonic_battles.csv');
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          };
+
           const prebuiltQueries = [
             {
               name: 'All French Victories',
@@ -363,12 +395,23 @@
                     <span className="text-2xl">📤</span>
                     Upload CSV File
                   </h2>
-                  <input
-                    type="file"
-                    accept=".csv"
-                    onChange={handleFileUpload}
-                    className="block w-full text-sm text-slate-300 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-amber-600 file:text-white hover:file:bg-amber-700 file:cursor-pointer cursor-pointer"
-                  />
+                  <div className="flex gap-4 items-center">
+                    <div className="flex-1">
+                      <input
+                        type="file"
+                        accept=".csv"
+                        onChange={handleFileUpload}
+                        className="block w-full text-sm text-slate-300 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-amber-600 file:text-white hover:file:bg-amber-700 file:cursor-pointer cursor-pointer"
+                      />
+                    </div>
+                    <button
+                      onClick={downloadCSV}
+                      className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-semibold transition-colors flex items-center gap-2 whitespace-nowrap"
+                    >
+                      <span>⬇️</span>
+                      Download CSV
+                    </button>
+                  </div>
                   <p className="text-slate-400 text-sm mt-2">Current dataset: {data.length} battles loaded</p>
                 </div>
 
