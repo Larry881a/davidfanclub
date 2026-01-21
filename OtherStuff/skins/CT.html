@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CS:GO Case Opening Simulator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { 
+                opacity: 1; 
+            }
+            50% { 
+                opacity: 0.8; 
+            }
+        }
+        
+        .spin-reveal {
+            animation: spin3d 2s ease-out forwards;
+        }
+        
+        @keyframes spin3d {
+            0% {
+                transform: perspective(1000px) rotateY(0deg) rotateX(0deg) scale(0.5);
+                opacity: 0;
+            }
+            50% {
+                transform: perspective(1000px) rotateY(360deg) rotateX(10deg) scale(1.1);
+                opacity: 1;
+            }
+            100% {
+                transform: perspective(1000px) rotateY(720deg) rotateX(0deg) scale(1);
+                opacity: 1;
+            }
+        }
+        
+        .float-weapon {
+            animation: floatAnim 3s ease-in-out infinite;
+        }
+        
+        @keyframes floatAnim {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+        
+        .glow-effect {
+            animation: glow 2s ease-in-out infinite;
+        }
+        
+        @keyframes glow {
+            0%, 100% {
+                filter: drop-shadow(0 0 10px currentColor);
+            }
+            50% {
+                filter: drop-shadow(0 0 30px currentColor);
+            }
+        }
+
+        .case-open {
+            animation: caseOpening 0.8s ease-out forwards;
+        }
+
+        @keyframes caseOpening {
+            0% {
+                transform: scaleX(1) rotateZ(0deg);
+                opacity: 1;
+            }
+            50% {
+                transform: scaleX(1.05) rotateZ(-5deg);
+                opacity: 1;
+            }
+            100% {
+                transform: scaleX(0.3) rotateZ(-10deg);
+                opacity: 0.5;
+            }
+        }
+
+        .case-3d {
+            width: 120px;
+            height: 150px;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: rotateCube 4s infinite linear;
+        }
+
+        @keyframes rotateCube {
+            0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+            100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
+        }
+
+        .case-3d-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid rgb(180, 140, 0);
+            background: linear-gradient(135deg, rgba(120, 100, 60, 0.8), rgba(200, 160, 80, 0.8));
+            font-size: 3rem;
+            backface-visibility: hidden;
+        }
+
+        .case-3d-front { transform: translateZ(60px); }
+        .case-3d-back { transform: rotateY(180deg) translateZ(60px); }
+        .case-3d-left { transform: rotateY(-90deg) translateZ(60px); }
+        .case-3d-right { transform: rotateY(90deg) translateZ(60px); }
+        .case-3d-top { transform: rotateX(90deg) translateZ(75px); }
+        .case-3d-bottom { transform: rotateX(-90deg) translateZ(75px); }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useRef, useEffect } = React;
+
+        const CaseOpener = () => {
+            const [isOpening, setIsOpening] = useState(false);
+            const [wonItem, setWonItem] = useState(null);
+            const [balance, setBalance] = useState(() => {
+                const saved = localStorage.getItem('caseOpenerBalance');
+                return saved ? parseFloat(saved) : 1000;
+            });
+            const [inventory, setInventory] = useState(() => {
+                const saved = localStorage.getItem('caseOpenerInventory');
+                return saved ? JSON.parse(saved) : [];
+            });
+            const [showInventory, setShowInventory] = useState(false);
+            const [showSpinAnimation, setShowSpinAnimation] = useState(false);
+            const [currentRoll, setCurrentRoll] = useState([]);
+            const [enlargedItemId, setEnlargedItemId] = useState(null);
+            const scrollRef = useRef(null);
+
+            // Save balance and inventory to localStorage whenever they change
+            useEffect(() => {
+                localStorage.setItem('caseOpenerBalance', balance.toString());
+            }, [balance]);
+
+            useEffect(() => {
+                localStorage.setItem('caseOpenerInventory', JSON.stringify(inventory));
+            }, [inventory]);
+
+            const rarityColors = {
+                'Mil-Spec': '#4b69ff',
+                'Restricted': '#8847ff',
+                'Classified': '#d32ce6',
+                'Covert': '#eb4b4b',
+                'Exceedingly Rare': '#ffd700'
+            };
+
+            const wearNames = {
+                'Factory New': [0.00, 0.07],
+                'Minimal Wear': [0.07, 0.15],
+                'Field-Tested': [0.15, 0.38],
+                'Well-Worn': [0.38, 0.45],
+                'Battle-Scarred': [0.45, 1.00]
+            };
+
+            const skins = [
+                { name: 'AK-47 | Blue Laminate', rarity: 'Mil-Spec', chance: 11.42, basePrice: 5.50, image: 'bluelam.png' },
+                { name: 'M4A4 | Desert-Strike', rarity: 'Mil-Spec', chance: 11.42, basePrice: 4.20, image: 'desert.png' },
+                { name: 'AWP | Safari Mesh', rarity: 'Mil-Spec', chance: 11.42, basePrice: 3.80, image: 'safaria.png' },
+                { name: 'Glock-18 | Dragon Tattoo', rarity: 'Mil-Spec', chance: 11.42, basePrice: 6.10, image: 'dragontat.png' },
+                { name: 'USP-S | Forest Leaves', rarity: 'Mil-Spec', chance: 11.42, basePrice: 3.50, image: 'forest.png' },
+                { name: 'P90 | Cold Blooded', rarity: 'Mil-Spec', chance: 11.42, basePrice: 4.80, image: 'cold.png' },
+                { name: 'FAMAS | Hexane', rarity: 'Mil-Spec', chance: 11.42, basePrice: 4.00, image: 'heaxne.png' },
+                { name: 'AK-47 | Redline', rarity: 'Restricted', chance: 3.20, basePrice: 18.50, image: 'redline.png' },
+                { name: 'M4A1-S | Guardian', rarity: 'Restricted', chance: 3.20, basePrice: 15.20, image: 'guardian.png' },
+                { name: 'Desert Eagle | Conspiracy', rarity: 'Restricted', chance: 3.20, basePrice: 12.80, image: 'conspiracy.png' },
+                { name: 'P250 | Undertow', rarity: 'Restricted', chance: 3.20, basePrice: 14.30, image: 'undertown.png' },
+                { name: 'SSG 08 | Blood in the Water', rarity: 'Restricted', chance: 3.20, basePrice: 22.40, image: 'waterblood.png' },
+                { name: 'AWP | Asiimov', rarity: 'Classified', chance: 0.64, basePrice: 85.00, image: 'asiimov.png' },
+                { name: 'AK-47 | Vulcan', rarity: 'Classified', chance: 0.64, basePrice: 95.50, image: 'vulcan.png' },
+                { name: 'M4A4 | Desolate Space', rarity: 'Classified', chance: 0.64, basePrice: 78.20, image: 'desspace.png' },
+                { name: 'AWP | Neo-Noir', rarity: 'Classified', chance: 0.64, basePrice: 68.90, image: 'Neonoir.png' },
+                { name: 'Desert Eagle | Code Red', rarity: 'Classified', chance: 0.64, basePrice: 72.30, image: 'coderead.png' },
+                { name: 'M4A4 | Howl', rarity: 'Covert', chance: 0.16, basePrice: 3500.00, image: 'howl.png' },
+                { name: 'AWP | Dragon Lore', rarity: 'Covert', chance: 0.16, basePrice: 4200.00, image: 'dragonlore.png' },
+                { name: 'AK-47 | Fire Serpent', rarity: 'Covert', chance: 0.16, basePrice: 1850.00, image: 'fireserpent.png' },
+                { name: 'M4A4 | Poseidon', rarity: 'Covert', chance: 0.16, basePrice: 1200.00, image: 'poseidon.png' },
+                { name: 'Karambit | Fade', rarity: 'Exceedingly Rare', chance: 0.065, basePrice: 2800.00, image: 'Fade.png' },
+                { name: 'Butterfly Knife | Crimson Web', rarity: 'Exceedingly Rare', chance: 0.065, basePrice: 3200.00, image: 'crimweb.png' },
+                { name: 'M9 Bayonet | Doppler', rarity: 'Exceedingly Rare', chance: 0.065, basePrice: 1500.00, image: 'doppler.png' },
+                { name: 'Karambit | Tiger Tooth', rarity: 'Exceedingly Rare', chance: 0.065, basePrice: 1800.00, image: 'Karambit.png' }
+            ];
+
+            const getRandomFloat = () => {
+                return Math.random();
+            };
+
+            const getWearName = (floatValue) => {
+                for (const [wear, [min, max]] of Object.entries(wearNames)) {
+                    if (floatValue >= min && floatValue < max) {
+                        return wear;
+                    }
+                }
+                return 'Battle-Scarred';
+            };
+
+            const calculatePrice = (basePrice, wear) => {
+                const wearMultipliers = {
+                    'Factory New': 1.5,
+                    'Minimal Wear': 1.2,
+                    'Field-Tested': 1.0,
+                    'Well-Worn': 0.7,
+                    'Battle-Scarred': 0.5
+                };
+                return basePrice * (wearMultipliers[wear] || 1.0);
+            };
+
+            const selectRandomSkin = () => {
+                const rand = Math.random() * 100;
+                let cumulative = 0;
+                
+                for (const skin of skins) {
+                    cumulative += skin.chance;
+                    if (rand <= cumulative) {
+                        const floatValue = getRandomFloat();
+                        const wear = getWearName(floatValue);
+                        return {
+                            ...skin,
+                            float: floatValue,
+                            wear: wear,
+                            price: calculatePrice(skin.basePrice, wear),
+                            id: Date.now() + Math.random()
+                        };
+                    }
+                }
+                const floatValue = getRandomFloat();
+                const wear = getWearName(floatValue);
+                return { 
+                    ...skins[0], 
+                    float: floatValue, 
+                    wear: wear,
+                    price: calculatePrice(skins[0].basePrice, wear),
+                    id: Date.now() + Math.random()
+                };
+            };
+
+            const generateRoll = () => {
+                const items = [];
+                for (let i = 0; i < 50; i++) {
+                    items.push(selectRandomSkin());
+                }
+                return items;
+            };
+
+            const openCase = () => {
+                if (isOpening || balance < 2.5) return;
+                
+                setBalance(prev => prev - 2.5);
+                setIsOpening(true);
+                setWonItem(null);
+                setShowSpinAnimation(false);
+                
+                const items = generateRoll();
+                setCurrentRoll(items);
+                const winningIndex = 45;
+                const winner = items[winningIndex];
+                
+                const itemWidth = 160;
+                const targetPosition = winningIndex * itemWidth;
+                const centerOffset = window.innerWidth / 2 - itemWidth / 2;
+                const finalPosition = -(targetPosition - centerOffset);
+                
+                if (scrollRef.current) {
+                    scrollRef.current.style.transition = 'none';
+                    scrollRef.current.style.transform = 'translateX(0px)';
+                    
+                    setTimeout(() => {
+                        scrollRef.current.style.transition = 'transform 5s cubic-bezier(0.08, 0.6, 0.2, 0.99)';
+                        scrollRef.current.style.transform = `translateX(${finalPosition}px)`;
+                    }, 50);
+                }
+                
+                setTimeout(() => {
+                    setShowSpinAnimation(true);
+                    setTimeout(() => {
+                        setWonItem(winner);
+                        setInventory(prev => [winner, ...prev]);
+                        setIsOpening(false);
+                    }, 2000);
+                }, 5100);
+            };
+
+            const sellItem = (itemId) => {
+                const item = inventory.find(i => i.id === itemId);
+                if (item) {
+                    setBalance(prev => prev + item.price);
+                    setInventory(prev => prev.filter(i => i.id !== itemId));
+                }
+            };
+
+            const sellAll = () => {
+                const total = inventory.reduce((sum, item) => sum + item.price, 0);
+                setBalance(prev => prev + total);
+                setInventory([]);
+            };
+
+            const deleteAll = () => {
+                if (confirm('Are you sure you want to delete all progress? This cannot be undone.')) {
+                    setBalance(1000);
+                    setInventory([]);
+                    localStorage.removeItem('caseOpenerBalance');
+                    localStorage.removeItem('caseOpenerInventory');
+                }
+            };
+
+            const totalInventoryValue = inventory.reduce((sum, item) => sum + item.price, 0);
+            const totalProfit = balance + totalInventoryValue - 1000;
+
+            return (
+                <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 text-white p-4 md:p-8">
+                    <div className="max-w-6xl mx-auto">
+                        <h1 className="text-4xl md:text-5xl font-bold text-center mb-2 bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
+                            Case Opening Simulator
+                        </h1>
+                        <p className="text-center text-gray-400 mb-8">Unbox legendary skins</p>
+                        
+                        <div className="bg-gray-800/50 backdrop-blur rounded-lg p-4 md:p-6 mb-8">
+                            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                                <div className="flex gap-6">
+                                    <div>
+                                        <p className="text-gray-400 text-sm">Balance</p>
+                                        <p className="text-2xl md:text-3xl font-bold text-green-400">${balance.toFixed(2)}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-gray-400 text-sm">Inventory Value</p>
+                                        <p className="text-2xl md:text-3xl font-bold text-blue-400">${totalInventoryValue.toFixed(2)}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-gray-400 text-sm">Total Profit</p>
+                                        <p className={`text-2xl md:text-3xl font-bold ${totalProfit >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                                            ${totalProfit.toFixed(2)}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="flex gap-2">
+                                    <button
+                                        onClick={() => setShowInventory(!showInventory)}
+                                        className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition-all"
+                                    >
+                                        {showInventory ? 'Hide' : 'Show'} Inventory ({inventory.length})
+                                    </button>
+                                    <button
+                                        onClick={openCase}
+                                        disabled={isOpening || balance < 2.5}
+                                        className={`px-6 md:px-8 py-3 md:py-4 rounded-lg font-bold text-lg md:text-xl transition-all ${
+                                            isOpening || balance < 2.5
+                                                ? 'bg-gray-600 cursor-not-allowed'
+                                                : 'bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 shadow-lg hover:shadow-xl'
+                                        }`}
+                                    >
+                                        {isOpening ? 'Opening...' : 'Open Case ($2.50)'}
+                                    </button>
+                                    <button
+                                        onClick={deleteAll}
+                                        className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg font-semibold transition-all"
+                                    >
+                                        Delete All
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        {showInventory && (
+                            <div className="bg-gray-800/50 backdrop-blur rounded-lg p-6 mb-8">
+                                <div className="flex justify-between items-center mb-4">
+                                    <h2 className="text-2xl font-bold">Your Inventory</h2>
+                                    {inventory.length > 0 && (
+                                        <button
+                                            onClick={sellAll}
+                                            className="px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg font-semibold transition-all"
+                                        >
+                                            Sell All (${totalInventoryValue.toFixed(2)})
+                                        </button>
+                                    )}
+                                </div>
+                                {inventory.length === 0 ? (
+                                    <p className="text-gray-400 text-center py-8">Your inventory is empty. Open some cases!</p>
+                                ) : (
+                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                        {inventory.map((item) => (
+                                            <div
+                                                key={item.id}
+                                                className="p-4 rounded-lg"
+                                                style={{
+                                                    backgroundColor: `${rarityColors[item.rarity]}20`,
+                                                    border: `2px solid ${rarityColors[item.rarity]}`
+                                                }}
+                                            >
+                                                <div className="flex justify-between items-start mb-3">
+                                                    <div className="flex-1">
+                                                        <p className="font-bold">{item.name}</p>
+                                                        <p className="text-sm text-gray-300">{item.wear}</p>
+                                                        <p className="text-xs text-gray-400 font-mono">Float: {item.float.toFixed(8)}</p>
+                                                        <p className="text-sm font-bold text-green-400 mt-1">${item.price.toFixed(2)}</p>
+                                                    </div>
+                                                    <div className="flex flex-col gap-2">
+                                                        <button
+                                                            onClick={() => sellItem(item.id)}
+                                                            className="px-3 py-1 bg-green-600 hover:bg-green-700 rounded text-sm font-semibold transition-all"
+                                                        >
+                                                            Sell
+                                                        </button>
+                                                        <button
+                                                            onClick={() => setEnlargedItemId(item.id)}
+                                                            className="px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded text-sm font-semibold transition-all"
+                                                        >
+                                                            View
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                {item.image && (item.image.includes('.png') || item.image.includes('.jpg') || item.image.includes('.svg')) ? (
+                                                    <img src={item.image} alt={item.name} className="w-full h-32 object-contain rounded-lg bg-black/30 mb-2" />
+                                                ) : null}
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
+                        {enlargedItemId && inventory.find(i => i.id === enlargedItemId) && (
+                            <div className="fixed inset-0 bg-black/80 backdrop-blur flex items-center justify-center z-50 p-4" onClick={() => setEnlargedItemId(null)}>
+                                <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg p-8 border-2 max-w-md w-full" onClick={e => e.stopPropagation()} style={{ borderColor: rarityColors[inventory.find(i => i.id === enlargedItemId)?.rarity] }}>
+                                    <div className="flex justify-between items-center mb-4">
+                                        <h3 className="text-2xl font-bold">{inventory.find(i => i.id === enlargedItemId)?.name}</h3>
+                                        <button onClick={() => setEnlargedItemId(null)} className="text-gray-400 hover:text-white text-2xl">✕</button>
+                                    </div>
+                                    {inventory.find(i => i.id === enlargedItemId)?.image && (
+                                        <img src={inventory.find(i => i.id === enlargedItemId)?.image} alt="Enlarged skin" className="w-full h-80 object-contain rounded-lg bg-black/50 mb-4" />
+                                    )}
+                                    <div className="space-y-2 text-gray-300">
+                                        <p><span className="font-semibold">Wear:</span> {inventory.find(i => i.id === enlargedItemId)?.wear}</p>
+                                        <p><span className="font-semibold">Float:</span> <span className="font-mono">{inventory.find(i => i.id === enlargedItemId)?.float.toFixed(8)}</span></p>
+                                        <p><span className="font-semibold">Price:</span> <span className="text-green-400">${inventory.find(i => i.id === enlargedItemId)?.price.toFixed(2)}</span></p>
+                                        <p><span className="font-semibold">Rarity:</span> <span style={{ color: rarityColors[inventory.find(i => i.id === enlargedItemId)?.rarity] }}>{inventory.find(i => i.id === enlargedItemId)?.rarity}</span></p>
+                                    </div>
+                                    <button onClick={() => setEnlargedItemId(null)} className="w-full mt-6 px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded-lg font-semibold transition-all">Close</button>
+                                </div>
+                            </div>
+                        )}
+
+                        <div className="relative mb-8 overflow-hidden rounded-lg bg-gray-800/30 backdrop-blur" style={{height: '220px'}}>
+                            {isOpening && <div className="absolute top-0 bottom-0 left-1/2 w-1 bg-yellow-400 z-10 shadow-lg shadow-yellow-400/50"></div>}
+                            
+                            {!isOpening && (
+                                <div className="absolute inset-0 flex items-center justify-center" style={{perspective: '1000px'}}>
+                                    <div className="flex flex-col items-center gap-4">
+                                        <div className="case-3d" style={{perspective: '1000px'}}>
+                                            <div className="case-3d-face case-3d-front">🔒</div>
+                                            <div className="case-3d-face case-3d-back">🔒</div>
+                                            <div className="case-3d-face case-3d-left">🔒</div>
+                                            <div className="case-3d-face case-3d-right">🔒</div>
+                                            <div className="case-3d-face case-3d-top"></div>
+                                            <div className="case-3d-face case-3d-bottom"></div>
+                                        </div>
+                                        <p className="text-gray-400 text-sm">Click "Open Case" to reveal!</p>
+                                    </div>
+                                </div>
+                            )}
+                            
+                            <div className="absolute inset-0 flex items-center">
+                                <div ref={scrollRef} className="flex gap-2 px-4">
+                                    {isOpening && currentRoll.map((item, idx) => (
+                                        <div
+                                            key={idx}
+                                            className="flex-shrink-0 w-36 h-48 rounded-lg p-3 flex flex-col items-center justify-center"
+                                            style={{
+                                                backgroundColor: `${rarityColors[item.rarity]}20`,
+                                                border: `2px solid ${rarityColors[item.rarity]}`
+                                            }}
+                                        >
+                                            {item.image.includes('.png') || item.image.includes('.jpg') || item.image.includes('.svg') ? (
+                                                <img src={item.image} alt={item.name} className="w-20 h-20 object-contain mb-2" />
+                                            ) : (
+                                                <div className="text-4xl mb-2">{item.image}</div>
+                                            )}
+                                            <p className="text-xs text-center font-semibold mb-1">{item.name}</p>
+                                            <p className="text-xs text-gray-400">{item.wear}</p>
+                                            <p 
+                                                className="text-xs font-bold mt-1"
+                                                style={{ color: rarityColors[item.rarity] }}
+                                            >
+                                                {item.rarity}
+                                            </p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        {wonItem && (
+                            <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg p-8 border-2" 
+                                style={{ borderColor: rarityColors[wonItem.rarity] }}>
+                                <h2 className="text-3xl font-bold text-center mb-6">You Unboxed!</h2>
+                                <div className="flex flex-col items-center">
+                                    {wonItem.image.startsWith('http') || wonItem.image.includes('.png') || wonItem.image.includes('.jpg') || wonItem.image.includes('.svg') ? (
+                                        <img 
+                                            src={wonItem.image} 
+                                            alt={wonItem.name} 
+                                            className="w-48 h-48 object-contain mb-4 float-weapon glow-effect"
+                                            style={{ filter: `drop-shadow(0 0 20px ${rarityColors[wonItem.rarity]})` }}
+                                        />
+                                    ) : (
+                                        <div 
+                                            className="text-8xl mb-4 float-weapon glow-effect"
+                                            style={{ color: rarityColors[wonItem.rarity] }}
+                                        >
+                                            {wonItem.image}
+                                        </div>
+                                    )}
+                                    <h3 className="text-2xl font-bold mb-2">{wonItem.name}</h3>
+                                    <p className="text-xl mb-2" style={{ color: rarityColors[wonItem.rarity] }}>
+                                        {wonItem.rarity}
+                                    </p>
+                                    <div className="bg-gray-700/50 rounded-lg p-4 mt-4">
+                                        <p className="text-gray-300">Wear: <span className="font-bold">{wonItem.wear}</span></p>
+                                        <p className="text-gray-300">Float Value: <span className="font-mono font-bold">{wonItem.float.toFixed(8)}</span></p>
+                                        <p className="text-gray-300">Value: <span className="font-bold text-green-400">${wonItem.price.toFixed(2)}</span></p>
+                                        <p className={`text-gray-300 mt-2`}>
+                                            Profit/Loss: <span className={`font-bold ${wonItem.price - 2.5 >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                                                ${(wonItem.price - 2.5).toFixed(2)}
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        <div className="mt-8 bg-gray-800/50 backdrop-blur rounded-lg p-6">
+                            <h3 className="text-xl font-bold mb-4">Possible Items ({skins.length} total)</h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                                {skins.map((skin, idx) => (
+                                    <div
+                                        key={idx}
+                                        className="p-3 rounded-lg text-sm"
+                                        style={{
+                                            backgroundColor: `${rarityColors[skin.rarity]}20`,
+                                            border: `1px solid ${rarityColors[skin.rarity]}`
+                                        }}
+                                    >
+                                        <p className="font-semibold">{skin.name}</p>
+                                        <p className="text-xs" style={{ color: rarityColors[skin.rarity] }}>
+                                            {skin.rarity} ({skin.chance.toFixed(2)}%)
+                                        </p>
+                                        <p className="text-xs text-gray-400 mt-1">Base: ${skin.basePrice.toFixed(2)}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+        
+
+        ReactDOM.render(<CaseOpener />, document.getElementById('root'));
+    </script>
+</body>
+</html>
